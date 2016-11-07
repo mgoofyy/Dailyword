@@ -6,6 +6,9 @@ var UserSchema = new Schema({
     nickname: {
         type: String
     }, //昵称
+    loginname:{
+        type: String
+    },
     userId: {
         type: String
     }, //用户id
@@ -83,7 +86,7 @@ UserSchema.virtual('isAdvance').get(function () {
 //建立索引  暂时建立三条索引
 
 UserSchema.index({
-    nickname: 1
+    loginname: 1
 }, {
     unique: true
 });
@@ -98,10 +101,11 @@ UserSchema.index({
     score: 1
 });
 
-UserSchema.pre('save', function () {
+UserSchema.pre('save', function (next) {
     var now = new Date();
     this.updateDate = now;
-    next;
+    next();
 });
 
-module.exports('User', UserSchema);
+mongoose.model('User', UserSchema);
+// exports.User = (mongoose.model('User'));
