@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const validator      = require('validator');
 const eventProxy = require('eventproxy');
-const tools = require('../../common/tools.js')
+const tools = require('../../common/util/validateString.js');
 
 // 处理接口逻辑
 exports.signup = function(req,res,next) {
