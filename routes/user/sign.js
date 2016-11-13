@@ -8,7 +8,7 @@ const User = require('../../proxy/user.js');
 // 处理接口逻辑 - 手机验证码注册
 exports.signup = function (req, res, next) {
     var phone = validator.trim(req.body.phone).toLowerCase();
-    var pass = validator.trim(req.body.pass);
+    var pass = req.body.pass;
     var verfityCode = validator.trim(req.body.verfityCode);
     console.log(phone + pass + verfityCode);
 

@@ -4,14 +4,13 @@ var config = require('../../config.js');
 /**
  * 密码加密 手机号撒盐
  */
-exports.passEncrty = function(pass,phone,callback) {
-    var salt = bcrypt.genSaltSync(10);
-    var hashPhone = bcrypt.hashSync(phone, salt);
-    bcrypt.hash(pass, hashPhone, function(err, hash) {
-         if(err) {
-             return callback(err);
-         }
-         return callback(null,hash);
-    });
+exports.passEncrty = function(pass,callback) {
+    bcrypt.hash(pass, 10, callback);
 };
+
+exports.passCheck = function(pass,hash,callback){
+    bcrypt.compare(pass, hash, callback);
+}
+
+// exports.valitorPass = function(pass,)
 

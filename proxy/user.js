@@ -12,13 +12,9 @@ var encryTool = require('../common/util/encry.js');
 exports.createAndNew = function (phone, pass, callback) {
     var user = new User();
     user.phone = phone;
-    encryTool.passEncrty(pass,phone,function(err,hash){
-        if(err) {
-            return next(err);
-        } else {
-            user.pass = hash;
-            user.save(callback);
-        }
+    encryTool.passEncrty(pass,function(err,hash){
+        user.pass = hash;
+        user.save(callback);
     });  
 };
 
