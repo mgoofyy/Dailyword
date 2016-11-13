@@ -5,6 +5,7 @@ const eventProxy = require('eventproxy');
 const tools = require('../../common/util/validateString.js');
 const User = require('../../proxy/user.js');
 const encry = require('../../common/util/encry.js');
+const token = require('../../common/util/token.js')
 
 // 短信验证码和密码登陆
 exports.login = function(req,res,next) {
@@ -61,9 +62,13 @@ exports.login = function(req,res,next) {
         }
         // 密码登陆
         if(verfityCode == undefined) {
-            encry.passCheck(pass,users[0].pass,function(err,bool){
+                var user = users[0];            
+            encry.passCheck(pass,user.pass,function(err,bool){
                 if(bool) {
-                    return ep.emit('user_login_ep_success',users[0]);
+                    token.encode(user.userId,function(token){
+                        user.token = token;
+                        return ep.emit('user_login_ep_success',user);
+                    });
                 }
                 return ep.emit('user_login_ep_error','密码错误');
             });

@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var BaseModel = require("./baseModel");
+var autoIncrement = require('mongoose-auto-increment');   //自增ID 模块
+    autoIncrement.initialize(mongoose.connection); 
 
 var UserSchema = new Schema({
     nickname: {
@@ -11,20 +13,20 @@ var UserSchema = new Schema({
         default: '3',
     },
     loginname: {
-        type: String
+        type: String,
+        default:'',
     },
-    userId: {
-        type: String
-    }, //用户id
     realname: {
-        type: String
+        type: String,
+        default:'',
     }, //真实用户名
     age: {
         type: String,
         default: 0,
     }, //年龄
     email: {
-        type: String
+        type: String,
+        default:'',
     }, //email
     pass: {
         type: String
@@ -36,7 +38,8 @@ var UserSchema = new Schema({
         type: String
     }, //地点
     avater: {
-        type: String
+        type: String,
+        default:'',
     }, //头像地址
     signature: {
         type: String,
@@ -62,7 +65,8 @@ var UserSchema = new Schema({
         default: 1,
     }, //级别
     isStar: {
-        type: Boolean
+        type: Boolean,
+        default:false,
     }, //是否是星级用户
     isVip: {
         type: Boolean,
@@ -82,11 +86,18 @@ var UserSchema = new Schema({
     }, //资料更新日期
 
     token: {
-        type: String
+        type: String,
     }, // access_token
 });
 
 UserSchema.plugin(BaseModel);
+
+UserSchema.plugin(autoIncrement.plugin, {               //自增ID配置
+  model: 'User',
+  field: 'userId',
+  startAt: 1000,
+  incrementBy: 1
+});
 
 UserSchema.virtual('isAdvance').get(function () {
     return this.score > 1000 | this.isStar;
