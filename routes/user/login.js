@@ -5,7 +5,7 @@ const eventProxy = require('eventproxy');
 const tools = require('../../common/util/validateString.js');
 const User = require('../../proxy/user.js');
 const encry = require('../../common/util/encry.js');
-const token = require('../../common/util/token.js')
+const token = require('../../common/util/token.js');
 
 // 短信验证码和密码登陆
 exports.login = function(req,res,next) {

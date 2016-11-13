@@ -19,6 +19,15 @@ exports.createAndNew = function (phone, pass, callback) {
 };
 
 /**
+ * 更新用户信息
+ * user 字段和用户模型一致
+ */
+exports.updateUser = function (userId,user,callback) {
+    // var user = new User();
+    User.update({userId:userId},{'$set':user},callback);
+};
+
+/**
  * 查找一个用户
  */
 exports.findUserOne = function(query, opt,callback) {

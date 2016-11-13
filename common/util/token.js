@@ -8,11 +8,10 @@ exports.verfity = function(token,callback) {
     if (token) {
         try {
             var decoded = jwt.decode(token, config.JWT_SIMPLE_TOKEN_APP_SECRET_STRING);
-            console.log(decoded)
             if (decoded.expires <= Date.now()) {
                 return callback(new Error('token已经失效'));
             } else {
-                console.log('当前token解密后' + decoded)
+                console.log(decoded)
                 return callback(null, decoded.userid);
             }
         } catch (err) {
