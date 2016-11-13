@@ -34,12 +34,14 @@ exports.signup = function (req, res, next) {
         })
     });
 
+    if(req.body.device == undefined) {
+        return ep.emit('user_sign_ep_error', '注册来源非法');
+    }
     if ([phone, pass, verfityCode].some(function (item) {
             return item === '';
         })) {
         return ep.emit('user_sign_ep_error', '注册信息不完整');
     };
-
     if (!tools.validatePhone(phone)) {
         return ep.emit('user_sign_ep_error', '手机号格式错误');
     }
@@ -51,13 +53,9 @@ exports.signup = function (req, res, next) {
         if (users.length > 0) {
             return ep.emit('user_sign_ep_error','手机已经被注册');
         }
-
-    });
-
-    User.createAndNew(phone,pass,function(){
-        
-    });
-
-    return ep.emit('user_sign_ep_success', '注册成功');
+        User.createAndNew(phone,pass,function(){
+            return ep.emit('user_sign_ep_success', '注册成功');
+        });
+    });  
 }
 

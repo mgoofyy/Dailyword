@@ -43,7 +43,7 @@ var UserSchema = new Schema({
         default: '你还没有说过什么',
     }, //个性签名
     device: {
-        type: Array
+        type: String,
     }, //设备s
     isBlock: {
         type: Boolean,
