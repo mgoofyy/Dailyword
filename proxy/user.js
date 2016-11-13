@@ -1,5 +1,6 @@
 var models = require('../models');
 var User = models.User;
+var encryTool = require('../common/util/encry.js');
 
 /**
  * nickname 昵称
@@ -8,11 +9,22 @@ var User = models.User;
  * pass 密码
  * @callback 回调
  */
-exports.createAndNew = function (nickname, loginname, email, pass, callback) {
+exports.createAndNew = function (phone, pass, callback) {
     var user = new User();
-    user.loginname = loginname;
-    user.nickname = nickname;
-    user.email = email;
-    user.pass = pass;
-    user.save(callback);
-}
+    user.phone = phone;
+    encryTool.passEncrty(pass,phone,function(err,hash){
+        if(err) {
+            return next(err);
+        } else {
+            user.pass = hash;
+            user.save(callback);
+        }
+    });  
+};
+
+/**
+ * 查找一个用户
+ */
+exports.findUserOne = function(query, opt,callback) {
+    User.find(query, '', opt, callback);
+};

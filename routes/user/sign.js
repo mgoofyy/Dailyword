@@ -5,13 +5,12 @@ const eventProxy = require('eventproxy');
 const tools = require('../../common/util/validateString.js');
 const User = require('../../proxy/user.js');
 
-// 处理接口逻辑
+// 处理接口逻辑 - 手机验证码注册
 exports.signup = function (req, res, next) {
-    var loginname = validator.trim(req.body.loginname).toLowerCase();
-    var email = validator.trim(req.body.email).toLowerCase();
+    var phone = validator.trim(req.body.phone).toLowerCase();
     var pass = validator.trim(req.body.pass);
-    var rePass = validator.trim(req.body.re_pass);
-    console.log(loginname + email + pass + rePass);
+    var verfityCode = validator.trim(req.body.verfityCode);
+    console.log(phone + pass + verfityCode);
 
     var ep = new eventProxy();
 
@@ -35,29 +34,30 @@ exports.signup = function (req, res, next) {
         })
     });
 
-    if ([loginname, email, pass, rePass].some(function (item) {
+    if ([phone, pass, verfityCode].some(function (item) {
             return item === '';
         })) {
         return ep.emit('user_sign_ep_error', '注册信息不完整');
     };
 
-    if (loginname.length < 5) {
-        ep.emit('user_sign_ep_error', '用户名至少需要5个字符');
-        return;
-    }
-    if (!tools.validateId(loginname)) {
-        return ep.emit('user_sign_ep_error', '用户名不合法');
-    }
-    if (!validator.isEmail(email)) {
-        return ep.emit('user_sign_ep_error', '邮箱不合法');
-    }
-    if (pass !== rePass) {
-        return ep.emit('user_sign_ep_error', '两次密码输入不一致');
+    if (!tools.validatePhone(phone)) {
+        return ep.emit('user_sign_ep_error', '手机号格式错误');
     }
 
-    User.createAndNew(loginname,loginname,email,pass,function(){
+    User.findUserOne({'phone':phone},{},function(err,users){
+        if (err) {
+            return next(err);
+        }
+        if (users.length > 0) {
+            return ep.emit('user_sign_ep_error','手机已经被注册');
+        }
 
+    });
+
+    User.createAndNew(phone,pass,function(){
+        
     });
 
     return ep.emit('user_sign_ep_success', '注册成功');
 }
+
