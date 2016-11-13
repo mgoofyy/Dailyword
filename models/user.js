@@ -6,7 +6,11 @@ var UserSchema = new Schema({
     nickname: {
         type: String
     }, //昵称
-    loginname:{
+    sex: {
+        type: String,
+        default: '3',
+    },
+    loginname: {
         type: String
     },
     userId: {
@@ -16,7 +20,8 @@ var UserSchema = new Schema({
         type: String
     }, //真实用户名
     age: {
-        type: String
+        type: String,
+        default: 0,
     }, //年龄
     email: {
         type: String
@@ -34,7 +39,8 @@ var UserSchema = new Schema({
         type: String
     }, //头像地址
     signature: {
-        type: String
+        type: String,
+        default: '你还没有说过什么',
     }, //个性签名
     device: {
         type: Array
@@ -48,16 +54,19 @@ var UserSchema = new Schema({
         default: false
     }, //是否被锁定
     score: {
-        type: String
+        type: String,
+        default: 0,
     }, //积分
     level: {
-        type: String
+        type: String,
+        default: 1,
     }, //级别
     isStar: {
         type: Boolean
     }, //是否是星级用户
     isVip: {
-        type: Boolean
+        type: Boolean,
+        default: false,
     }, //是否是会员
     isActive: {
         type: Boolean,
@@ -108,4 +117,3 @@ UserSchema.pre('save', function (next) {
 });
 
 mongoose.model('User', UserSchema);
-// exports.User = (mongoose.model('User'));
