@@ -59,7 +59,7 @@ exports.update = function(req,res,next) {
         UserProxy.updateUser(userId,{
           'age':age,
           'email':email,
-          'loginname':'loginname',
+          'loginname':loginname,
           'realname':realname,
           'sex':sex,
           'signature':signature,

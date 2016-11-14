@@ -14,5 +14,7 @@ mongoose.connect(config.mongoose_db, {
 });
 
 require('./user.js');
+require('./post.js');
 
 exports.User = mongoose.model('User');
+exports.DPOST = mongoose.model('DPOST');

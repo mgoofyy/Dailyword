@@ -33,3 +33,4 @@ exports.updateUser = function (userId,user,callback) {
 exports.findUserOne = function(query, opt,callback) {
     User.find(query, '', opt, callback);
 };
+
