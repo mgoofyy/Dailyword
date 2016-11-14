@@ -20,7 +20,7 @@ exports.login = function(req,res,next) {
     ep.fail(next);
 
     ep.on('user_login_ep_error',function(message){
-        res.status(200);
+        // res.status(200);
         res.json({
             error: message,
             code: 0,
@@ -29,7 +29,7 @@ exports.login = function(req,res,next) {
     });
 
     ep.on('user_login_ep_success',function(message){
-        res.status(200);
+        // res.status(200);
         res.json({
             data: message,
             code: 1,
@@ -62,18 +62,18 @@ exports.login = function(req,res,next) {
         }
         // 密码登陆
         if(verfityCode == undefined) {
-                var user = users[0];            
+            var user = users[0];            
             encry.passCheck(pass,user.pass,function(err,bool){
                 if(bool) {
                     token.encode(user.userId,function(token){
                         user.token = token;
                         return ep.emit('user_login_ep_success',user);
                     });
-                }
-                return ep.emit('user_login_ep_error','密码错误');
+                } else {
+                        return ep.emit('user_login_ep_error','密码错误');
+                } 
             });
         }
-        console.log(users);
     }); 
 
     

@@ -46,7 +46,6 @@ exports.update = function(req,res,next) {
     }
 
     token.verfity(req.headers.token,function(err,userId){
-      console.log('++++++++++++' + err + '+++++++')
         if(err) {
             return ep.emit('user_update_ep_error','Token非法');
         }
