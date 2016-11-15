@@ -1,12 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const validator = require('validator');
 const eventProxy = require('eventproxy');
 const tools = require('../../common/util/validateString.js');
 const token = require('../../common/util/token.js');
 const UserProxy = require('../../proxy/user.js');
-var models = require('../../models');
-var User = models.User;
+const models = require('../../models');
+const User = models.User;
 
 exports.update = function(req,res,next) {
     var ep = new eventProxy();

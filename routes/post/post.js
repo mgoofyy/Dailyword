@@ -16,7 +16,7 @@ exports.postContent = function(req,res,next) {
     ep.fail(next);
 
     ep.on('post_content_ep_error',function(message){
-        // res.status(200);
+        res.status(200);
         res.json({
             error: message,
             code: 0,
@@ -25,7 +25,7 @@ exports.postContent = function(req,res,next) {
     });
 
     ep.on('post_content_ep_success',function(message){
-        // res.status(200);
+        res.status(200);
         res.json({
             data: message,
             code: 1,
