@@ -15,6 +15,8 @@ mongoose.connect(config.mongoose_db, {
 
 require('./user.js');
 require('./post.js');
+require('./oneWord.js');
 
 exports.User = mongoose.model('User');
 exports.DPOST = mongoose.model('DPOST');
+exports.OneWord = mongoose.model('OneWord');

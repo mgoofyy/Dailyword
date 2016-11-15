@@ -83,4 +83,4 @@ OWSchema.index({
 });
 
 
-mongoose.model('OneWord',DPOSTSchema);
+mongoose.model('OneWord',OWSchema);
