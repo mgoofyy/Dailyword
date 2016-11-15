@@ -3,6 +3,7 @@ const users = require('./routes/user/users');
 const sign  = require('./routes/user/sign');
 const login = require('./routes/user/login');
 const Post = require('./routes/post/post');
+const oneWord = require('./routes/post/oneWord');
 
 exports = module.exports = function(app) {
     app.use('/', routes); //请求API root URL
@@ -13,4 +14,5 @@ exports = module.exports = function(app) {
 
     //业务流
     app.post('/post/publish',Post.postContent); //发布一条内容
+    app.post('/oneWord/publish',oneWord.oneWord); //发布一句话 一言
 }
