@@ -68,10 +68,4 @@ exports.postContent = function(req,res,next) {
         }); 
 
     });
-
-    
-
-
-
-
 };

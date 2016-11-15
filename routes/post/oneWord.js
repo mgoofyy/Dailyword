@@ -43,8 +43,6 @@ exports.oneWord = function(req,res,next) {
             return ep.emit('oneword_plish_ep_error','Token非法');
         }
 
-        
-
         var title =  req.body.title;
         var content = req.body.content;
         var tag = req.body.tag;
@@ -82,3 +80,62 @@ exports.oneWord = function(req,res,next) {
     });
 
 };
+
+
+exports.deleteOneWord = function(req,res,next) {
+
+    var owId = req.body.owId; 
+
+    var ep = new eventProxy();
+
+    ep.fail(next);
+
+    ep.on('oneword_delete_ep_error', function (message) {
+        res.status(200);
+        res.json({
+            error: message,
+            code: 0,
+            method: 'POST'
+        })
+    });
+
+    ep.on('oneword_delete_ep_success', function (message) {
+        res.status(200);
+        res.json({
+            code: '1',
+            message: message,
+            method: 'POST'
+        })
+    });
+
+    if(req.body.device == undefined) {
+        return ep.emit('oneword_delete_ep_error','请求来源出错');
+    }
+
+    if(req.headers.token == undefined) {
+        return ep.emit('oneword_delete_ep_error','未登录');
+    }
+
+    if(owId == undefined) {
+        return ep.emit('oneword_delete_ep_error','请求数据出错');
+    }
+
+    oneWord.findOneWord({'owId':owId},{},function(err,oneWords){
+            if (err) {
+                return next(err);
+            }
+            console.log('0==============' + oneWords + owId);
+            if (oneWords.length == 0) {
+                return ep.emit('oneword_delete_ep_error','内部错误');
+            }
+            var oneword = oneWords[0];
+            
+            oneWord.deleteOneWord({'owId':owId},function(err,doc){
+                if(err) {
+                    return ep.emit('oneword_delete_ep_error','内部错误');
+                } else {
+                    return ep.emit('oneword_delete_ep_success', '删除成功');
+                }
+            });
+    });
+}

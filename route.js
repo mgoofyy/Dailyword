@@ -15,4 +15,5 @@ exports = module.exports = function(app) {
     //业务流
     app.post('/post/publish',Post.postContent); //发布一条内容
     app.post('/oneWord/publish',oneWord.oneWord); //发布一句话 一言
+    app.post('/oneWord/delete',oneWord.deleteOneWord);
 }
