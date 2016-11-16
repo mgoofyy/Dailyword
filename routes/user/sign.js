@@ -59,3 +59,9 @@ exports.signup = function (req, res, next) {
     });  
 }
 
+//验证码注册
+
+exports.verfityCode = function(req,res,next) {
+
+};
+

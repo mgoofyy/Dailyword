@@ -16,7 +16,9 @@ mongoose.connect(config.mongoose_db, {
 require('./user.js');
 require('./post.js');
 require('./oneWord.js');
+require('./verfityCode.js')
 
 exports.User = mongoose.model('User');
 exports.DPOST = mongoose.model('DPOST');
 exports.OneWord = mongoose.model('OneWord');
+exports.Vcode = mongoose.model('VCode'); 

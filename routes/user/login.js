@@ -80,7 +80,7 @@ exports.login = function(req,res,next) {
 
     //验证码登陆
     if(pass == undefined) {
-
+        
     }
 
 };
