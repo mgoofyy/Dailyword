@@ -28,6 +28,7 @@ exports.deleteOneWord = function(query,next) {
 
 /**
  * 根据查询条件查询一个oneword
+ * //验证码的类型，1 注册 2 登陆 3找回密码
  */
 exports.findOneWord = function(query, opt,next) {
     OneWord.find(query, '', opt, next);
