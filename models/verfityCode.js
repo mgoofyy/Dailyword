@@ -32,8 +32,6 @@ VCodeSchema.plugin(autoIncrement.plugin, {               //自增ID配置
 //建立手机号索引
  VCodeSchema.index({
     phone: 1
-}, {
-    unique: true
 });
 
 // 建立验证码类型索引

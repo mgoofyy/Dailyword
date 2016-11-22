@@ -7,7 +7,6 @@ const User = require('../../proxy/user.js');
 const encry = require('../../common/util/encry.js');
 const token = require('../../common/util/token.js');
 const vcode = require('../../proxy/vcode.js');
-const 
 
 // 短信验证码和密码登陆
 exports.login = function(req,res,next) {
@@ -73,7 +72,7 @@ exports.login = function(req,res,next) {
                         // user.create
                     });
                 } else {
-                        return ep.emit('user_login_ep_error','密码错误');
+                    return ep.emit('user_login_ep_error','密码错误');
                 } 
             });
         }
@@ -94,34 +93,37 @@ exports.login = function(req,res,next) {
                     });
                     return ep.emit('user_login_ep_error','内部错误,请重试');
                 }
-                else if (vscodes.length == 1) {
+                else if (vscodes.length == 1) {}
                     
-                var tmp = vscodes[0];
-                //数据库当中是登陆的验证码
-                if(tmp.type != '2') {
-                    return ep.emit('user_login_ep_error','验证码出错');
-                } 
-                //验证码校验正确
-                if(verfityCode == tmp.code) {
-                    User.findUserOne({'phone':phone},{},function(err,users){
-                        if (err) {
-                            return next(err);
-                        }
-                        if (users.length == 0) {
-                            return ep.emit('user_login_ep_error','手机号还没有注册');
-                        }
-                        token.encode(user.userId,function(token){
-                            var user = users[0];
-                            user.token = token;
-                            return ep.emit('user_login_ep_success',user);
+                    var tmp = vscodes[0];
+                    //数据库当中是登陆的验证码
+                    if(tmp.type != '2') {
+                        return ep.emit('user_login_ep_error','验证码出错');
+                    } 
+                    //验证码校验正确
+                    if(verfityCode == tmp.code) {
+                        User.findUserOne({'phone':phone},{},function(err,users){
+                            if (err) {
+                                return next(err);
+                            }
+                            if (users.length == 0) {
+                                return ep.emit('user_login_ep_error','手机号还没有注册');
+                            }
+                            token.encode(user.userId,function(token){
+                                var user = users[0];
+                                user.token = token;
+                                return ep.emit('user_login_ep_success',user);
+                            });
                         });
-                    });
-                }
+                    }
+                
+            });
         }
-    }); 
+    });
 };
 
 //获取登陆验证码的接口 “最好把信息放到redis里面去” 暂存在mongose 设定90秒有效期 = 短信验证码每90秒可以重发一次
+//测试用
 exports.verfityCode = function(req,res,next) {
     var phone = validator.trim(req.body.phone);
     var device = req.body.device;
@@ -142,8 +144,8 @@ exports.verfityCode = function(req,res,next) {
     ep.on('verfityCode_login_ep_success',function(message){
         res.status(200);
         res.json({
-            error: message,
-            code: 0,
+            verfityCode: message,
+            code: 1,
             method: 'POST'
         });
     });
@@ -160,4 +162,24 @@ exports.verfityCode = function(req,res,next) {
         return ep.emit('verfityCode_login_ep_error', '手机号格式错误');
     }
 
+    vcode.find(phone,'2',function(err,vscdes){
+        if(err){
+            return ep.emit('verfityCode_login_ep_error', '内部错误');
+        }
+        if(vscdes.length != 0) {
+            vscdes.some(function(item){
+                vcode.delete(item.phone,'2',function(err){
+                    if(err) {
+                        return ep.emit('verfityCode_login_ep_error', '内部错误');
+                    }
+                });
+            });
+        }
+        require('crypto').randomBytes(2, function(ex, buf) {  
+        var verCode = buf.toString('hex');
+        vcode.createAndNew(phone,'2',verCode,function(err,next){
+            return ep.emit('verfityCode_login_ep_success', verCode);
+        });
+    });  
+    }); 
 };

@@ -124,7 +124,6 @@ exports.deleteOneWord = function(req,res,next) {
             if (err) {
                 return next(err);
             }
-            console.log('0==============' + oneWords + owId);
             if (oneWords.length == 0) {
                 return ep.emit('oneword_delete_ep_error','内部错误');
             }
