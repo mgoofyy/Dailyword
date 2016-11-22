@@ -93,13 +93,8 @@ exports.login = function(req,res,next) {
                     });
                     return ep.emit('user_login_ep_error','内部错误,请重试');
                 }
-                else if (vscodes.length == 1) {}
-                    
+                else if (vscodes.length == 1) {
                     var tmp = vscodes[0];
-                    //数据库当中是登陆的验证码
-                    if(tmp.type != '2') {
-                        return ep.emit('user_login_ep_error','验证码出错');
-                    } 
                     //验证码校验正确
                     if(verfityCode == tmp.code) {
                         User.findUserOne({'phone':phone},{},function(err,users){
@@ -109,15 +104,20 @@ exports.login = function(req,res,next) {
                             if (users.length == 0) {
                                 return ep.emit('user_login_ep_error','手机号还没有注册');
                             }
+                            var user = users[0];
                             token.encode(user.userId,function(token){
                                 var user = users[0];
                                 user.token = token;
+                                vcode.delete(tmp.phone,'2',function(err){
+                                });
                                 return ep.emit('user_login_ep_success',user);
                             });
                         });
+                    } else {
+                         return ep.emit('user_login_ep_error','验证码错误'); 
                     }
-                
-            });
+            }
+        });
         }
     });
 };
